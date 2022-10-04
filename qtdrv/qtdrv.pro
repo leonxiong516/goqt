@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 greaterThan(QT_MAJOR_VERSION, 4) {
-    QT += widgets uitools printsupport
+    QT += widgets uitools printsupport multimedia multimediawidgets
 } else {
-    QT += core gui
+    QT += core gui multimedia multimediawidgets
     CONFIG += uitools
 }
 
@@ -14,9 +14,10 @@ TARGET = qtdrv.ui
 TEMPLATE = lib
 
 CONFIG += app_bundle
+CONFIG += plugin
 
 BUILD_SOURCE_TREE = $$PWD
-BUILD_LIB_PATH = $$BUILD_SOURCE_TREE/../bin
+BUILD_LIB_PATH = $$BUILD_SOURCE_TREE/../../../../../../../bin
 
 DESTDIR = $$BUILD_LIB_PATH
 

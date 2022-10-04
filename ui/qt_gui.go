@@ -83384,3 +83384,66 @@ func (q *QWizardPage) Wizard() *QWizard {
 	_rp.SetDriver(__rv, 399000, false)
 	return _rp
 }
+
+
+//struct QVideoWidget : QVideoWidget
+type QVideoWidget struct {
+	QWidget
+}
+//QMediaPlayer::QMediaPlayer()
+func NewQVideoWidget() *QVideoWidget {
+	var __rv uintptr
+	err := DirectQtDrv(unsafe.Pointer(&__rv), 401000, 401002, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+	if err != nil || __rv == 0 {
+		return nil
+	}
+	_p := &QVideoWidget{}
+	_p.SetDriver(__rv, 401000, false)
+	return _p
+}
+
+//struct QMediaPlayer : QMediaPlayer
+type QMediaPlayer struct {
+	QWidget
+}
+//QMediaPlayer::QMediaPlayer()
+func NewQMediaPlayer() *QMediaPlayer {
+	var __rv uintptr
+	err := DirectQtDrv(unsafe.Pointer(&__rv), 402000, 402002, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+	if err != nil || __rv == 0 {
+		return nil
+	}
+	_p := &QMediaPlayer{}
+	_p.SetDriver(__rv, 402000, false)
+	return _p
+}
+
+func (q *QMediaPlayer) SetVideoOutput(video *QVideoWidget) {
+	if (video == nil || video.drv.dd == 0) {
+		return
+	}
+	q.Drv(402000, 402003, Native(video), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+}
+
+func (q *QMediaPlayer) SetMedia(file string) {
+	if (q == nil || q.drv.dd == 0) {
+		return
+	}
+	_value := NewCStringHead(file)
+	defer FreeCStringHead(_value)
+	q.Drv(402000, 402004, unsafe.Pointer(_value), nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+}
+
+func (q *QMediaPlayer) Play() {
+	if (q == nil || q.drv.dd == 0) {
+		return
+	}
+	q.Drv(402000, 402005, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+}
+
+func (q *QMediaPlayer) Stop() {
+	if (q == nil || q.drv.dd == 0) {
+		return
+	}
+	q.Drv(402000, 402006, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+}

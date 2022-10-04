@@ -15,6 +15,8 @@
 #define protected public
 
 #include <QtGui>
+#include <QMediaPlayer>
+#include <QVideoWidget>
 #include "cdrv.h"
 #include "cdrv_signal.h"	
 
@@ -419,6 +421,9 @@ int drv_QWidget(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, vo
 int drv_QWidgetAction(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12);
 int drv_QWizard(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12);
 int drv_QWizardPage(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12);
+
+int drv_QMediaPlayer(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12);
+int drv_QVideoWidget(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12);
 // QAbstractGraphicsShapeItem
 int drv_QAbstractGraphicsShapeItem(void *_p, int funcid, void* p1,void* p2,void* p3,void* p4,void* p5,void* p6,void* p7,void* p8,void* p9,void* p10,void* p11,void* p12)	
 {
@@ -36493,7 +36498,7 @@ int drv_QPushButton(void *_p, int funcid, void* p1,void* p2,void* p3,void* p4,vo
 		break;
 	}
 	case 333104: {
-		*(void**)_p = new QPushButton(drvGetStringHead(p1),(QWidget*)(p2));
+        *(void**)_p = new QPushButton(drvGetStringHead(p1),(QWidget*)(p2));
 		break;
 	}
 	case 333105: {
@@ -45899,8 +45904,78 @@ int qtdrv(void *_p, int _typeid, int funcid, void *p1, void *p2, void *p3, void 
 		return drv_QWizard(_p,funcid,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12);
 	case 400000:
 		return drv_QWizardPage(_p,funcid,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12);
+    case 401000:
+        return drv_QVideoWidget(_p,funcid,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12);
+    case 402000:
+        return drv_QMediaPlayer(_p,funcid,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12);
+
 	default:
 		return -1;
 	}
 	return 0;
+}
+
+int drv_QVideoWidget(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12)
+{
+    QVideoWidget *pThis = (QVideoWidget*)_p;
+    switch (funcid) {
+    case 401000+1: {
+        delete pThis;
+        break;
+    }
+    case 401002: {
+        *(void**)_p = new QVideoWidget();
+        break;
+    }
+    case 401003: {
+        pThis->move(*(int*)p1,*(int*)p2);
+        break;
+    }
+    case 401004: {
+        pThis->resize(*(int*)p1,*(int*)p2);
+        break;
+    }
+    case 401005: {
+        pThis->resize(*(QSize*)(p1));
+        break;
+    }
+    default:
+        return drv_QWidget(_p,funcid,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12);
+    }
+    return 0;
+}
+
+int drv_QMediaPlayer(void *_p, int funcid, void *p1, void *p2, void *p3, void *p4, void *p5, void *p6, void *p7, void *p8, void *p9, void *p10, void *p11, void *p12)
+{
+    QMediaPlayer *pThis = (QMediaPlayer*)_p;
+    switch (funcid) {
+    case 402000+1: {
+        delete pThis;
+        break;
+    }
+    case 402002: {
+        *(void**)_p = new QMediaPlayer();
+        break;
+    }
+    case 402003: {
+        pThis->setVideoOutput((QVideoWidget*)p1);
+        break;
+    }
+    case 402004: {
+        qDebug() << "filename:" << drvGetStringHead(p1);
+        pThis->setMedia(QUrl::fromLocalFile(drvGetStringHead(p1)));
+        break;
+    }
+    case 402005: {
+        pThis->play();
+        break;
+    }
+    case 402006: {
+        pThis->stop();
+        break;
+    }
+    default:
+        return drv_QWidget(_p,funcid,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12);
+    }
+    return 0;
 }
